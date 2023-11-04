@@ -1,0 +1,38 @@
+#include<iostream>
+using namespace std;
+
+
+class Singleton {
+private:
+    static Singleton* instance;
+    Singleton(const Singleton& other);
+    Singleton() { value = 5; };
+    ~Singleton() {}; //생략가능
+    int value;
+public:
+    static Singleton* GetInstance() {
+        if (instance == NULL) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+    int GetValue() { return value; };
+    void SetValue(int a) { value = a; };
+};
+Singleton* Singleton::instance = nullptr;
+
+
+int main() {
+    Singleton* singleton = Singleton::GetInstance();
+    Singleton* singleton2 = Singleton::GetInstance();
+    cout << singleton->GetValue() << endl; //5 출력
+    cout << singleton2->GetValue() << endl; //5 출력
+
+    singleton->SetValue(3);
+    cout << singleton->GetValue() << endl; //3 출력
+    cout << singleton2->GetValue() << endl; //3 출력
+
+    cout << "addr singleton :  " << singleton << endl;
+    cout << "addr singleton2 :  " << singleton2 << endl;
+
+}
