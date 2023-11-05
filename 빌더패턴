@@ -1,0 +1,72 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class PersonBuilder;
+
+class Person {
+private:
+    string name;
+    int age;
+    string gender;
+    string address;
+
+public:
+    friend class PersonBuilder;
+
+    static PersonBuilder create();
+
+    void displayInfo() const {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "Gender: " << gender << endl;
+        cout << "Address: " << address << endl;
+    }
+};
+
+class PersonBuilder {
+private:
+    Person person;
+
+public:
+    PersonBuilder& withName(const string& name) {
+        person.name = name;
+        return *this;
+    }
+
+    PersonBuilder& withAge(int age) {
+        person.age = age;
+        return *this;
+    }
+
+    PersonBuilder& withGender(const string& gender) {
+        person.gender = gender;
+        return *this;
+    }
+
+    PersonBuilder& withAddress(const string& address) {
+        person.address = address;
+        return *this;
+    }
+
+    Person build() {
+        return person;
+    }
+};
+
+PersonBuilder Person::create() {
+    return PersonBuilder();
+}
+
+int main() {
+    Person person = Person::create()
+        .withName("Alice")
+        .withAge(30)
+        .withGender("Female")
+        .withAddress("Busan")
+        .build();
+
+    person.displayInfo();
+
+    return 0;
+}
