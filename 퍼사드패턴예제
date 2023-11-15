@@ -1,0 +1,61 @@
+#pragma once
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+
+class ControllerA { // ControllerA 클래스
+public:   
+    void init() { // 함수
+        cout << "ControllerA init" << endl; // 콘솔 출력
+    }
+    // 함수
+    void run() {// 콘솔 출력
+        cout << "ControllerA run" << endl;
+    } // 함수
+    void close() { // 콘솔 출력
+        cout << "ControllerA close" << endl;
+    }
+};
+
+class ControllerB { // ControllerB 클래스
+public:  
+    void get() { 
+        cout << "ControllerB get" << endl;
+    }
+    
+    void put() {
+        cout << "ControllerB put" << endl;
+    }
+};
+
+class WorkFlow { // Facade 패턴 클래스
+private:
+    ControllerA cona;// 퍼사드 패턴에서 사용될 맴버 변수
+    ControllerB conb;
+public:
+    void runA() { // runA 타입의 함수
+        // 사양 순서대로 함수를 실행
+        this->cona.init();
+        this->conb.get();
+        this->cona.run();
+        this->cona.close();
+    }
+    // runB 타입의 함수
+    void runB() {
+        // 사양 순서대로 함수를 실행
+        this->conb.put();
+        this->cona.run();
+    }
+};
+// 실행 함수
+int main() {
+    
+    WorkFlow work; // 인스턴스 생성
+    cout << "runA type execute." << endl;
+    
+    work.runA(); // Facade 패턴의 클래스의 runA 함수를 실행
+    cout << endl << "runB type execute." << endl;
+    
+    work.runB(); // Facade 패턴의 클래스의 runB 함수를 실행
+    return 0;
+}
