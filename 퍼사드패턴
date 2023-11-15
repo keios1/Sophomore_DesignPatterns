@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+class SubsystemA { // 서브시스템 클래스들
+public:
+    void operA() {
+        cout << "SubsystemA" << endl;
+    }
+};
+
+class SubsystemB {
+public:
+    void operB() {
+        cout << "SubsystemB" << endl;
+    }
+};
+
+class SubsystemC {
+public:
+    void operC() {
+        cout << "SubsystemC" << endl;
+    }
+};
+
+class Facade { // 퍼사드 클래스
+private:
+    SubsystemA subsystemA;
+    SubsystemB subsystemB;
+    SubsystemC subsystemC;
+
+public:
+    void oper() {
+        cout << "Facade " << endl;
+        subsystemA.operA();
+        subsystemB.operB();
+        subsystemC.operC();
+    }
+};
+
+int main() {
+    
+    Facade facade; 
+    facade.oper();
+
+    return 0;
+}
