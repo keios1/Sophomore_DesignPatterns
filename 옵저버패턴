@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Observer { // Observer 인터페이스
+public:
+    virtual ~Observer() {}
+    virtual void Update(const string& message) = 0;
+};
+
+class Subject { // Subject 인터페이스
+public:
+    virtual ~Subject() {}
+    virtual void Attach(Observer* observer) = 0;
+    virtual void Detach(Observer* observer) = 0;
+    virtual void Notify(const string& message) = 0;
+};
+
+class ConcreteSubject : public Subject { // Subject 클래스
+private:
+    vector<Observer*> observers;
+    string state;
+
+public:
+    void Attach(Observer* observer) override {
+        observers.push_back(observer);
+        cout << "Attach" << endl;
+    }
+    void Detach(Observer* observer) override {
+        observers.erase(remove(observers.begin(), observers.end(), observer), observers.end());
+        cout << "Detach" << endl;
+    }
+    void Notify(const string& message) override {
+        state = message;
+        for (Observer* observer : observers) {
+            observer->Update(state);
+            cout << "Notify" << endl;
+        }
+    }
+    void SomeBusinessLogic() {
+        Notify("New State");
+        cout << "SomeBusinessLogic" << endl;
+    }
+};
+
+class ConcreteObserver : public Observer { // Observer 클래스
+private:
+    string observerState;
+public:
+    void Update(const string& message) override {
+        observerState = message;
+        cout << "Observer update new state: " << observerState << endl;
+    }
+};
+
+int main() {
+    ConcreteSubject subject;
+    ConcreteObserver observer1;
+    ConcreteObserver observer2;
+
+    subject.Attach(&observer1); // 옵저버들을 주제에 연결
+    subject.Attach(&observer2);
+
+    subject.SomeBusinessLogic();// 주제의 작업 수행 및 옵저버에게 알림
+
+    subject.Detach(&observer1); // 옵저버들을 주제에서 분리
+
+    subject.SomeBusinessLogic();// 다시 주제의 작업 수행 및 옵저버에게 알림
+
+    return 0;
+}
