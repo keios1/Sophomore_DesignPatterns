@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+
+class GameCharacter {
+private:
+    static GameCharacter* instance;
+
+    string characterName;// 캐릭터의 속성
+    int health;
+    int power;
+    int speed;
+    int defense;
+    int critical;
+    int criticalpercentage;
+
+    GameCharacter()
+        : characterName("DefaultCharacter"), health(0), power(0), speed(0)
+        ,defense(0), critical(0), criticalpercentage(0) {        
+        cout << "Game Character Initialized." << endl;// 캐릭터 초기화 코드
+    }
+
+    ~GameCharacter() {       
+        cout << "Game Character Destroyed." << endl; // 캐릭터 소멸시 코드
+    }
+
+public:
+    static GameCharacter* getInstance() {
+        if (!instance) {
+            instance = new GameCharacter();
+        }
+        return instance;
+    }
+  
+    void CharacterInfo() { // 캐릭터 정보 출력
+        cout << "Character Name: " << characterName << endl;
+        cout << "Health: " << health << endl;
+        cout << "power: " << power << endl;
+        cout << "speed: " << speed << endl;
+        cout << "defense: " << defense << endl;
+        cout << "critical: " << critical << endl;
+        cout << "criticalpercentage: " << criticalpercentage << endl;
+    
+    }
+
+    void setCharacterName(const std::string& name) {
+        characterName = name;
+    }
+    void setHealth(int value) {
+        health = value;
+    }
+    void setPower(int value) {
+        power = value;
+    }
+    void setSpeed(int value) {
+        speed = value;
+    }
+    void setDefense(int value) {
+        defense = value;
+    }
+    void setCritical(int value) {
+        critical = value;
+    }
+    void setCriticalPercentage(int value) {
+        criticalpercentage = value;
+    }
+};
+
+GameCharacter* GameCharacter::instance = nullptr; // 정적 멤버 변수 초기화
+
+int main() {    
+    GameCharacter* gameCharacter = GameCharacter::getInstance(); // 게임 캐릭터 인스턴스 얻기
+    
+    gameCharacter->CharacterInfo();// 캐릭터 정보 출력
+    
+    gameCharacter->setCharacterName("Zero");// 캐릭터 능력치 설정
+    gameCharacter->setHealth(150);
+    gameCharacter->setPower(20);
+    gameCharacter->setSpeed(40);
+    gameCharacter->setDefense(10);
+    gameCharacter->setCritical(50);
+    gameCharacter->setCriticalPercentage(25);
+    
+    gameCharacter->CharacterInfo();// 변경된 캐릭터 정보 출력
+
+    return 0;
+}
