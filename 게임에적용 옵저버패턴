@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Observer {
+public:
+    virtual void update(const string& message) {
+        cout << message << endl;
+    }
+};
+
+class GameSubject {
+private:
+    vector<Observer*> observers;
+    string gameMessage;
+
+public:
+    void notifyObservers() {
+        for (size_t i = 0; i < observers.size(); ++i) {
+            Observer* observer = observers[i];
+            observer->update(gameMessage);
+        }
+    }
+    void addObserver(Observer* observer) {
+        observers.push_back(observer);
+    }
+
+    void setGameMessage(const string& message) {
+        gameMessage = message;
+        notifyObservers();
+    }
+    
+};
+
+class PlayerObserver : public Observer {
+private:
+    string playerName;
+
+public:
+    PlayerObserver(const string& name) : playerName(name) {}
+
+    void update(const string& message) {
+        cout << playerName << "님이 메시지를 받음: " << message << endl;
+    }
+};
+
+int main() {
+    GameSubject game;
+
+    PlayerObserver player1("플레이어1");
+    PlayerObserver player2("플레이어2");
+
+    game.addObserver(&player1);
+    game.addObserver(&player2);
+
+    game.setGameMessage("새로운 단계 해금");
+
+    return 0;
+}
