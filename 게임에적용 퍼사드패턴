@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+class SubsystemA {
+private:
+    double power = 1;
+    double speed = 1;
+    double defense = 1;
+    int money = 0;
+    string name = "player1";
+public:
+    double getPower() {
+        return power;
+    }
+    void Stats() {
+        cout << "파워 : " << power << endl;
+        cout << "스피드 : " << speed << endl;
+        cout << "방어력 : " << defense << endl;
+        cout << "돈 : " << money << endl;
+        cout << "플레이어 : " << name << endl;
+    }
+};
+class SubsystemB {
+private:
+    string sword = "Excalibur(무기공격력 30)";
+    string armor = "Night Cape";
+    string accessories = "Dominator";
+    string potion = "Elixir";
+    double weaponPower = 30.0;
+public:
+    void Equipment() {
+        cout << "무기 : " << sword << endl;
+        cout << "방어구 : " << armor << endl;
+        cout << "장신구 : " << accessories << endl;
+        cout << "포션 : " << potion << endl;
+    }
+    double getWeaponPower() {
+        return weaponPower;
+    }
+};
+class SubsystemC {
+public:
+    void realPower(double CPower, double WPower) {
+        double totalPower = CPower + WPower;
+        cout << "총 공격력 : " << totalPower << endl;
+    }
+};
+class Facade {
+private:
+    SubsystemA subsystemA;
+    SubsystemB subsystemB;
+    SubsystemC subsystemC;
+public:
+    void Character() {
+        cout << "Facade " << endl;
+        subsystemA.Stats();
+        subsystemB.Equipment();
+        double CPower = subsystemA.getPower();
+        double WPower = subsystemB.getWeaponPower();
+        subsystemC.realPower(CPower, WPower);
+    }
+};
+int main() {
+    Facade facade;
+    facade.Character();
+    return 0;
+}
