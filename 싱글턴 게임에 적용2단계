@@ -1,0 +1,154 @@
+# Sophomore_DesignPatterns
+
+#include <iostream>
+using namespace std;
+
+class GameCharacter {
+private:
+    static GameCharacter* instance;
+
+    string characterName;
+    int health;
+    int power;
+    int speed;
+    int defense;
+    int critical;
+    int criticalpercentage;
+
+    int exp;
+    int level;
+
+    GameCharacter()
+        : characterName("DefaultCharacter"), health(0), power(0), speed(0)
+        , defense(0), critical(0), criticalpercentage(0), exp(0), level(1) {
+        cout << "Game Character Initialized." << endl;
+    }
+
+    ~GameCharacter() {
+        cout << "Game Character Destroyed." << endl;
+    }
+
+public:
+    static GameCharacter* getInstance() {
+        if (!instance) {
+            instance = new GameCharacter();
+        }
+        return instance;
+    }
+
+    void CharacterInfo() {
+        cout << "Character Name: " << characterName << endl;
+        cout << "Health: " << health << endl;
+        cout << "Power: " << power << endl;
+        cout << "Speed: " << speed << endl;
+        cout << "Defense: " << defense << endl;
+        cout << "Critical: " << critical << endl;
+        cout << "Critical Percentage: " << criticalpercentage << "%" << endl;
+        cout << "exp: " << exp << endl;
+        cout << "Level: " << level << endl;
+
+        cout << endl;
+    }
+
+    void setCharacterName(const std::string& name) {
+        characterName = name;
+    }
+
+    void setHealth(int value) {
+        health = value;
+    }
+
+    void setPower(int value) {
+        power = value;
+    }
+
+    void setSpeed(int value) {
+        speed = value;
+    }
+
+    void setDefense(int value) {
+        defense = value;
+    }
+
+    void setCritical(int value) {
+        critical = value;
+    }
+
+    void setCriticalPercentage(int value) {
+        criticalpercentage = value;
+    }
+
+    void setExperience(int value) {
+        exp = value;
+        updateLevel();
+    }
+
+    void setLevel(int value) {
+        level = value;
+    }
+
+    void gainExperience(int amount) {
+        exp += amount;
+        updateLevel();
+    }
+
+    void LevelUp() {
+        level++;
+        cout << "Level Up: " << level << endl;
+
+        health += 10;
+        power += 10;
+        speed += 10;
+        defense += 10;
+        critical += 10;
+        criticalpercentage += 10; // 레벨 업 시 능력치를 10씩 증가
+    }
+
+    void Skill() {
+        cout << characterName << " 스킬 사용 " << endl;
+        int skillDamage = power + 20;  
+        cout << "스킬이 적에게" << skillDamage << " 의 피해를 입혔습니다." << endl;
+    }
+
+private:
+    void updateLevel() {
+        if (exp >= 100) { //경험치가 100 이상이면 레벨 업
+            LevelUp();
+            exp = exp % 100; 
+        }
+    }
+};
+
+GameCharacter* GameCharacter::instance = nullptr;
+
+int main() {
+    GameCharacter* gameCharacter = GameCharacter::getInstance();
+
+    gameCharacter->CharacterInfo();
+
+    gameCharacter->setCharacterName("Zero");
+    gameCharacter->setHealth(150);
+    gameCharacter->setPower(20);
+    gameCharacter->setSpeed(40);
+    gameCharacter->setDefense(10);
+    gameCharacter->setCritical(50);
+    gameCharacter->setCriticalPercentage(25);
+    gameCharacter->setExperience(150);
+
+    gameCharacter->CharacterInfo();
+
+    while (true) {
+        string input;
+        cout << "q를 누르면 스킬 사용(다른키 누르면 종료): ";
+        cin >> input;
+
+        if (input == "q" || input == "Q") {
+            gameCharacter->Skill();
+        }
+        else {
+            break;
+        }
+    }
+
+    return 0;
+}
