@@ -1,0 +1,120 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+enum class ElementalType {
+    FIRE,
+    ICE,
+    LIGHTNING
+};
+
+class EquipmentBuilder;
+
+class Equipment {
+private:
+    string equipmentName;
+    int attackBonus;
+    int attackSpeed;
+    int defenseBonus;
+    int health;
+    ElementalType elementalType;
+
+public:
+    friend class EquipmentBuilder;
+
+    static EquipmentBuilder create();
+
+    void displayInfo(){
+        cout << "Equipment Name: " << equipmentName << endl;
+        cout << "Attack Bonus: " << attackBonus << endl;
+        cout << "Defense Bonus: " << defenseBonus << endl;
+        cout << "Elemental Type: ";
+        switch (elementalType) {
+        case ElementalType::FIRE:
+            cout << "Fire";
+            break;
+        case ElementalType::ICE:
+            cout << "Ice";
+            break;
+        case ElementalType::LIGHTNING:
+            cout << "Lightning";
+            break;
+        default:
+            cout << "None";
+        }
+        cout << endl;
+    }
+};
+
+class EquipmentBuilder {
+private:
+    Equipment equipment;
+
+public:
+    EquipmentBuilder& withEquipmentName(const string& name) {
+        equipment.equipmentName = name;
+        return *this;
+    }
+
+    EquipmentBuilder& withAttackBonus(int bonus) {
+        equipment.attackBonus = bonus;
+        return *this;
+    }
+
+    EquipmentBuilder& withAttackSpeed(int speed) {
+        equipment.attackSpeed = speed;
+        return *this;
+    }
+
+    EquipmentBuilder& withDefenseBonus(int bonus) {
+        equipment.defenseBonus = bonus;
+        return *this;
+    }
+
+    EquipmentBuilder& withHealth(int health) {
+        equipment.health = health;
+        return *this;
+    }
+
+    EquipmentBuilder& withElementalType(ElementalType type) {
+        equipment.elementalType = type;
+        return *this;
+    }
+
+    Equipment build() {
+        return equipment;
+    }
+};
+
+EquipmentBuilder Equipment::create() {
+    return EquipmentBuilder();
+}
+
+int main() {
+    Equipment sword = Equipment::create()
+        .withEquipmentName("Holy Sword")
+        .withAttackBonus(10)
+        .withAttackSpeed(20)
+        .withDefenseBonus(0)
+        .withHealth(0)
+        .withElementalType(ElementalType::LIGHTNING)
+        .build();
+
+    EquipmentBuilder shieldBuilder;
+    Equipment shield = shieldBuilder.withEquipmentName("Perfect Shield")
+        .withAttackBonus(0)
+        .withDefenseBonus(5)
+        .withHealth(30)
+        .withElementalType(ElementalType::ICE)
+        .build();
+
+    cout << "Sword Information:" << endl;
+    sword.displayInfo();
+
+    cout << endl;
+
+    cout << "Shield Information:" << endl;
+    shield.displayInfo();
+
+    return 0;
+}
